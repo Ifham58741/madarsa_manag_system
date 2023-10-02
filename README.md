@@ -1,70 +1,364 @@
-# Getting Started with Create React App
+prommp for home page:-
+we are trying to create a react app with one home page with following sections:-
+1.admin login (with user id and password) after enter it will redirect to admin page 
+2.subadmin login(with user id and password) after enter it will redirect to subadmin page 
+3. 5 hyperlink in nav menu to redirect into other 5 pages the name of pages are following :-
+1.home
+2.student information
+3.admission
+4.programs and fees structure
+5.annual report with donation option
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+4.one chatbot that allow user to enter their information and that will push the notification to subadmin panel(5.one translate button that will allow to translate whole page into the other language(common in all pages ))
+5.one translate button that will allow to translate whole page into the other language(common in all pages )
 
-## Available Scripts
 
-In the project directory, you can run:
+1.chat gpt
+2.bard
+3.bing
+4.code llama
+5.llama 70B
+6.claude
+7.poe
 
-### `npm start`
+1.chat gpt
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---------------------Create the Components------------------------
+src/
+  components/
+    AdminLogin.js
+    SubadminLogin.js
+    Navigation.js
+    Chatbot.js
+    TranslateButton.js
+    Home.js
+    StudentInformation.js
+    Admission.js
+    ProgramsAndFees.js
+    AnnualReport.js
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+ ------------------------------------------------Implement Routing----------------------------------------
 
-### `npm test`
+ ------code for app.js--------
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+ import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Navigation from './components/Navigation';
+import Home from './components/Home';
+import StudentInformation from './components/StudentInformation';
+import Admission from './components/Admission';
+import ProgramsAndFees from './components/ProgramsAndFees';
+import AnnualReport from './components/AnnualReport';
 
-### `npm run build`
+function App() {
+  return (
+    <Router>
+      <div>
+        <Navigation />
+        <Switch>
+          <Route path="/" exact component={Home} />
+          <Route path="/student-information" component={StudentInformation} />
+          <Route path="/admission" component={Admission} />
+          <Route path="/programs-and-fees" component={ProgramsAndFees} />
+          <Route path="/annual-report" component={AnnualReport} />
+        </Switch>
+      </div>
+    </Router>
+  );
+}
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+export default App;
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+-------------------------------------- Implement Authentication----------------------------------
+// AuthContext.js
+import { createContext, useContext, useState } from 'react';
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+const AuthContext = createContext();
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+export function AuthProvider({ children }) {
+  const [isAdminAuthenticated, setAdminAuthenticated] = useState(false);
+  const [isSubadminAuthenticated, setSubadminAuthenticated] = useState(false);
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+  const loginAdmin = () => {
+    // Implement admin login logic here
+    setAdminAuthenticated(true);
+  };
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+  const loginSubadmin = () => {
+    // Implement subadmin login logic here
+    setSubadminAuthenticated(true);
+  };
 
-## Learn More
+  const logout = () => {
+    setAdminAuthenticated(false);
+    setSubadminAuthenticated(false);
+  };
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+  return (
+    <AuthContext.Provider
+      value={{ isAdminAuthenticated, isSubadminAuthenticated, loginAdmin, loginSubadmin, logout }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+}
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+export function useAuth() {
+  return useContext(AuthContext);
+}
+// AuthContext.js
+import { createContext, useContext, useState } from 'react';
 
-### Code Splitting
+const AuthContext = createContext();
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+export function AuthProvider({ children }) {
+  const [isAdminAuthenticated, setAdminAuthenticated] = useState(false);
+  const [isSubadminAuthenticated, setSubadminAuthenticated] = useState(false);
 
-### Analyzing the Bundle Size
+  const loginAdmin = () => {
+    // Implement admin login logic here
+    setAdminAuthenticated(true);
+  };
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+  const loginSubadmin = () => {
+    // Implement subadmin login logic here
+    setSubadminAuthenticated(true);
+  };
 
-### Making a Progressive Web App
+  const logout = () => {
+    setAdminAuthenticated(false);
+    setSubadminAuthenticated(false);
+  };
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+  return (
+    <AuthContext.Provider
+      value={{ isAdminAuthenticated, isSubadminAuthenticated, loginAdmin, loginSubadmin, logout }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+}
 
-### Advanced Configuration
+export function useAuth() {
+  return useContext(AuthContext);
+}
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### Deployment
+---------------------------------------------Implement Translation---------------------------------------------
+For translation, you can use a library like react-i18next. Follow the library's documentation to set up translation features in your app.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-### `npm run build` fails to minify
+------------------------------------Styling---------------------------------------
+Style your components using CSS, a CSS framework like Bootstrap or Material-UI, or a CSS-in-JS solution.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+
+--------------------------------------------chat gpt=----------------------------------------------------
+
+
+
+----------------------------bard--------------------------
+
+To create a React app with the following sections on the home page:
+
+Admin login (with user id and password) after enter it will redirect to admin page
+Subadmin login (with user id and password) after enter it will redirect to subadmin page
+5 hyperlink in nav menu to redirect into other 5 pages the name of pages are following :-
+Home
+Student information
+Admission
+Programs and fees structure
+Annual report with donation option
+One chatbot that allow user to enter their information and that will push the notification to subadmin panel
+One translate button that will allow to translate whole page into the other language (common in all pages)
+You can follow these steps:
+
+Create a new React project using npx create-react-app my-app.
+Install the following dependencies using npm install:
+react-router-dom
+react-chatbot
+react-translate
+Create a components directory and create the following components:
+AdminLogin
+SubadminLogin
+NavMenu
+Chatbot
+TranslateButton
+Create a pages directory and create the following pages:
+Home
+StudentInformation
+Admission
+ProgramsAndFeesStructure
+AnnualReport
+In the App component, import the following components:
+JavaScript
+import AdminLogin from './components/AdminLogin';
+import SubadminLogin from './components/SubadminLogin';
+import NavMenu from './components/NavMenu';
+import Chatbot from './components/Chatbot';
+import TranslateButton from './components/TranslateButton';
+Use code with caution. Learn more
+In the App component, render the following:
+JavaScript
+return (
+  <div>
+    <AdminLogin />
+    <SubadminLogin />
+    <NavMenu />
+    <Chatbot />
+    <TranslateButton />
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/student-information" element={<StudentInformation />} />
+      <Route path="/admission" element={<Admission />} />
+      <Route path="/programs-and-fees-structure" element={<ProgramsAndFeesStructure />} />
+      <Route path="/annual-report" element={<AnnualReport />} />
+    </Routes>
+  </div>
+);
+Use code with caution. Learn more
+Implement the AdminLogin, SubadminLogin, NavMenu, Chatbot, and TranslateButton components.
+Implement the Home, StudentInformation, Admission, ProgramsAndFeesStructure, and AnnualReport pages.
+Start the React development server using npm start.
+Once you have completed these steps, you will have a React app with the following sections on the home page:
+
+Admin login
+Subadmin login
+Nav menu with links to the home page, student information page, admission page, programs and fees structure page, and annual report page
+Chatbot
+Translate button
+You can then customize the app to meet your specific needs.
+
+
+----------------------------------------bard-----------------------------------------
+
+/my-react-app
+  /src
+    /components
+      /Admin
+        - AdminLogin.js
+        - AdminPage.js
+      /Subadmin
+        - SubadminLogin.js
+        - SubadminPage.js
+      /Chatbot
+        - Chatbot.js
+      /Common
+        - TranslateButton.js
+    /pages
+      - HomePage.js
+      - StudentInformation.js
+      - Admission.js
+      - ProgramsAndFees.js
+      - AnnualReport.js
+    /assets
+      /images
+        - (Place your image files here)
+    - App.js
+    - index.js
+  /public
+    - index.html
+    - (Other static files)
+  /node_modules
+    - (Installed npm packages)
+  - package.json
+  - package-lock.json
+  - (Other configuration files)
+  NEW HIREARCHY
+  To develop a website with the described features, you can use a combination of programming languages and technologies. Here's a hierarchy of folders and files for your project:
+
+
+- madrasa-website
+  - backend
+    - controllers
+      - adminController.js
+      - subadminController.js
+      - expenseController.js
+      - donationController.js
+      - feesController.js
+      - chatbotController.js
+    - models
+      - Admin.js
+      - Subadmin.js
+      - Expense.js
+      - Donation.js
+      - Student.js
+    - routes
+      - adminRoutes.js
+      - subadminRoutes.js
+      - expenseRoutes.js
+      - donationRoutes.js
+      - feesRoutes.js
+      - chatbotRoutes.js
+    - server.js
+  - client
+    - public
+      - index.html
+    - src
+      - components
+        - HomePage.js
+        - AdminLoginPage.js
+        - SubadminLoginPage.js
+        - NavigationMenu.js
+        - Chatbot.js
+        - TranslateButton.js
+        - ...
+      - pages
+        - Home.js
+        - StudentInformation.js
+        - Admission.js
+        - ProgramsAndFeesStructure.js
+        - AnnualReport.js
+        - ...
+      - authentication
+        - AdminAuth.js
+        - SubadminAuth.js
+      - i18n
+        - translations.js
+      - App.js
+      - index.js
+  - config
+    - database.js
+    - passport.js
+  - public
+    - images
+      - ...
+  - .env
+  - package.json
+  - README.md
+
+
+Here's a breakdown of the folders and their contents:
+
+- backend: This folder contains the server-side code for handling routes, controllers, models, and database interactions.
+  - controllers: Contains controller files for different functionalities like admin management, subadmin management, expenses, donations, fees, and the chatbot.
+  - models: Defines the data models for admin, subadmin, expenses, donations, and students.
+  - routes: Contains route definitions for different sections of your website.
+  - server.js: The main server file that initializes your Express server.
+
+- client: This folder contains the client-side code for your React app.
+  - public: Contains the HTML template and public assets.
+  - src: Contains React components, pages, authentication logic, and internationalization files.
+    - components: React components for various sections of your website.
+    - pages: React components for different pages.
+    - authentication: Files related to user authentication.
+    - i18n: Language translation files.
+    - App.js: The main React component that handles routing.
+    - index.js: The entry point for rendering your React app.
+
+- config: Configuration files.
+  - database.js: Database configuration.
+  - passport.js: Passport.js configuration for authentication.
+
+- public: Public assets like images.
+
+- .env: Environment variables for your project.
+
+- package.json: Dependency and script configuration for your project.
+
+- README.md: Documentation for your project.
+
+This hierarchy separates the client and server code, making it more organized and maintainable. It also includes sections for handling authentication, internationalization (i18n), and server routes/controllers for various functionalities. You can adapt this structure to fit your project's specific needs and naming conventions.
