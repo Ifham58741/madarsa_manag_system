@@ -362,3 +362,66 @@ Here's a breakdown of the folders and their contents:
 - README.md: Documentation for your project.
 
 This hierarchy separates the client and server code, making it more organized and maintainable. It also includes sections for handling authentication, internationalization (i18n), and server routes/controllers for various functionalities. You can adapt this structure to fit your project's specific needs and naming conventions.
+
+
+
+
+- madrasa-website
+  - backend
+    - controllers
+      - adminController.js
+      - subadminController.js
+      - expenseController.js
+      - donationController.js
+      - feesController.js
+      - chatbotController.js
+    databse
+        db.js
+        init.sql
+    - models
+      - Admin.js
+      - Subadmin.js
+      - Expense.js
+      - Donation.js
+      - Student.js
+    - routes
+      - adminRoutes.js
+      - subadminRoutes.js
+      - expenseRoutes.js
+      - donationRoutes.js
+      - feesRoutes.js
+      - chatbotRoutes.js
+    - server.js
+  - client
+    - public
+      - index.html
+    - src
+      - components
+        - HomePage.js
+        - AdminLoginPage.js
+        - SubadminLoginPage.js
+        - NavigationMenu.js
+        - Chatbot.js
+        - TranslateButton.js
+        - ...
+      - pages
+        - Home.js
+        - StudentInformation.js
+        - Admission.js
+        - ProgramsAndFeesStructure.js
+        - AnnualReport.js
+        - ...
+      - authentication
+        - AdminAuth.js
+        - SubadminAuth.js
+      - i18n
+        - translations.js
+      - App.js
+      - index.js
+  - config
+    - database.js
+    - passport.js
+  - public
+    - images
+      - ...
+  - .env
